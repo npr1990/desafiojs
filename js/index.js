@@ -9,21 +9,20 @@ let valorProducto = parseInt(prompt("ingrese valor de producto:"));
 let modoDePago = prompt(
   "ingrese modo de pago: 1 - efectivo (20%), 2 - debito (10%), 3 - credito"
 );
-let precioFinal;
 
-switch (modoDePago) {
-  case "1": precioFinal = valorProducto * IVA * descuentoEfectivo
+function valorFinal(modo) {
+  switch (modo) {
+  case "1": 
+      return valorProducto * IVA * descuentoEfectivo
 
-    break;
+  case "2": 
+      return valorProducto * IVA * descuentoDebito
 
-  case "2": precioFinal = valorProducto * IVA * descuentoDebito
-    break;
+  case "3": 
+      return valorProducto * IVA
 
-  case "3": precioFinal = valorProducto * IVA
-    break;
-
-  default: precioFinal = valorProducto * IVA
-    break;
+  default: 
+      return valorProducto * IVA
 }
-
-alert("el precio final es: "+ precioFinal)
+}
+alert("el precio final es: "+ valorFinal(modoDePago))  
