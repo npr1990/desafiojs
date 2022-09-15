@@ -1,0 +1,21 @@
+body {
+  background-color: whitesmoke;
+  font-family: 'Times New Roman', Times, serif;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.button-delete { 
+  background-color: darkred !important;
+  color: white !important;
+}
+
+.button-grey {
+  background-color: slategray !important;
+  color: white !important;
+}
+
+.foco-en-imput { 
+  border-color: limegreen !important;
+  background-color: white !important;
+}

@@ -1,23 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <script src="./js/index.js"></script>
-  <script src="./js/arrayproductos.js"></script>
-  <script defer src="./js/dom.js"></script>
-</head>
-<body>
-  <header> 
-    <h1>MicroProblems</h1>
-  </header>
-  <main>
-    <table id="tablaProductos">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="./js/index.js"></script>
+    <link href="./index.css" type="stylesheet" />
+    <script defer src="./js/eventos.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>MicroProblems</h1>
+    </header>
 
-    </table>
-  </main>
-  
-</body>
+    <main>
+      <form action="" autocomplete="off" method="POST">
+        <input
+          type="text"
+          id="inputNombre"
+          placeholder="Descripción del producto"
+          tabindex="1"
+        />
+        <input type="number" id="inputImporte" min="0" tabindex="2" />
+      </form>
+
+      <button type="submit" id="btnAgregar">AGREGAR</button>
+      
+      <table id="tablaProductos"></table>
+
+      <p>Selecciona un medio de pago</p>
+      <label for="efectivo">Efectivo</label>
+      <input type="radio" name="modoPago" value="efectivo" />
+      <label for="debito">Debito</label>
+      <input type="radio" name="modoPago" value="debito"/>
+      <label for="credito">Credito</label>
+      <input type="radio" name="modoPago" value="credito" checked="checked"/>
+    </main>
+
+    <footer>
+      <button type="submit" id="sumaPrecioFinal">VER PRECIO FINAL</button>
+      <p id="verPrecioFinal"></p>
+     
+    </footer>
+  </body>
 </html>
