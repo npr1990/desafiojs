@@ -15,8 +15,6 @@ const descuentoEfectivo = 0.8;
 
 const descuentoDebito = 0.9;
 
-const productos = [];
-
 class Producto {
   constructor(nombre, precio) {
     this.nombre = nombre;
@@ -25,7 +23,7 @@ class Producto {
 }
 
 btnPrecioFinal.addEventListener("click", () => {
-
+  const productos = JSON.parse(localStorage.getItem("productos"))||[]
 
 
   //filtrado de productos con atributo precio mayor a 0
@@ -60,7 +58,9 @@ btnAgregar.addEventListener("click", () => {
   const nombre = nombreProducto.value;
   const precio = parseInt(importeProducto.value);
   const producto = new Producto(nombre, precio);
-  productos.push(producto);
+  const productos = JSON.parse(localStorage.getItem("productos"))||[];
+  productos.push(producto)
+  localStorage.setItem("productos", JSON.stringify(productos));
 
   const fila = `<tr>
               <td>${producto.nombre}</td>
