@@ -5,7 +5,7 @@ const importeProducto = document.querySelector("#inputImporte");
 const btnPrecioFinal = document.querySelector("#sumaPrecioFinal");
 const modoPagoSeleccionado = document.querySelector(
   'input[name="modoPago"]:checked'
-  ).value;
+).value;
 const parrafoPrecioFinal = document.querySelector("#verPrecioFinal");
 
 // Agregado de precios.
@@ -23,8 +23,8 @@ class Producto {
 }
 
 btnPrecioFinal.addEventListener("click", () => {
-  const productos = JSON.parse(localStorage.getItem("productos"))||[]
-
+  const productosGuardados = JSON.parse(localStorage.getItem("productos"));
+  const productos = productosGuardados ? productosGuardados : [];
 
   //filtrado de productos con atributo precio mayor a 0
   let productosValidos = productos.filter((a) => a.precio > 0);
@@ -51,16 +51,18 @@ btnPrecioFinal.addEventListener("click", () => {
       precioFinal = sumatoriaProductos * IVA;
   }
 
-  parrafoPrecioFinal.innerHTML = `el precio final de ${productosValidos.length} productos es: $ ${precioFinal.toFixed(2)}`
+  parrafoPrecioFinal.innerHTML = `el precio final de ${
+    productosValidos.length
+  } productos es: $ ${precioFinal.toFixed(2)}`;
 });
 
 btnAgregar.addEventListener("click", () => {
   const nombre = nombreProducto.value;
   const precio = parseInt(importeProducto.value);
   const producto = new Producto(nombre, precio);
-  const productos = JSON.parse(localStorage.getItem("productos"))||[];
-  productos.push(producto)
-  localStorage.setItem("productos", JSON.stringify(productos));
+  const productos = JSON.parse(localStorage.getItem("productos")) || [];
+  const productosActualizados = [...productos, producto];
+  localStorage.setItem("productos", JSON.stringify(productosActualizados));
 
   const fila = `<tr>
               <td>${producto.nombre}</td>
@@ -72,6 +74,7 @@ btnAgregar.addEventListener("click", () => {
 const inputs = document.querySelectorAll("input");
 
 inputs.forEach((input) => {
-  input.addEventListener("focus", () => (input.className = "foco-en-input"));
-  input.addEventListener("blur", () => (input.className = ""));
+  const { addEventListener, className } = input;
+  addEventListener("focus", () => (className = "foco-en-input"));
+  addEventListener("blur", () => (className = ""));
 });
