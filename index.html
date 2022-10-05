@@ -4,12 +4,11 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <script src="./js/index.js"></script>
-    <link href="./index.css" type="stylesheet" />
-    <script defer src="./js/eventos.js"></script>
+    <title>Problemas</title>
+    <link href="./index.css" type="text/css" rel="stylesheet">
+    
   </head>
-  <body>
+  <body class="body">
     <header>
       <h1>MicroProblems</h1>
     </header>
@@ -22,7 +21,7 @@
           placeholder="Descripción del producto"
           tabindex="1"
         />
-        <input type="number" id="inputImporte" min="0" tabindex="2" />
+        <input type="number" id="inputImporte" min="0" tabindex="2" placeholder="Valor del producto" />
       </form>
 
       <button type="submit" id="btnAgregar">AGREGAR</button>
@@ -40,8 +39,9 @@
 
     <footer>
       <button type="submit" id="sumaPrecioFinal">VER PRECIO FINAL</button>
-      <p id="verPrecioFinal"></p>
      
     </footer>
+    <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11.4.37/dist/sweetalert2.all.min.js'></script>
+    <script src="./js/eventos.js"></script>
   </body>
 </html>

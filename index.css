@@ -1,21 +1,12 @@
-body {
-  background-color: whitesmoke;
+.body {
+  background-color: #000000;
   font-family: 'Times New Roman', Times, serif;
   padding-left: 10px;
   padding-right: 10px;
+  color: #6E00FFE3;
+  display: flex;
+  align-items: center;
+  flex-flow: column;
+  height: 250px;
 }
 
-.button-delete { 
-  background-color: darkred !important;
-  color: white !important;
-}
-
-.button-grey {
-  background-color: slategray !important;
-  color: white !important;
-}
-
-.foco-en-imput { 
-  border-color: limegreen !important;
-  background-color: white !important;
-}

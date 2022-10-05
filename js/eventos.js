@@ -1,3 +1,4 @@
+
 const tabla = document.querySelector("#tablaProductos");
 const btnAgregar = document.querySelector("#btnAgregar");
 const nombreProducto = document.querySelector("#inputNombre");
@@ -6,7 +7,6 @@ const btnPrecioFinal = document.querySelector("#sumaPrecioFinal");
 const modoPagoSeleccionado = document.querySelector(
   'input[name="modoPago"]:checked'
 ).value;
-const parrafoPrecioFinal = document.querySelector("#verPrecioFinal");
 
 // Agregado de precios.
 const IVA = 1.21;
@@ -51,9 +51,7 @@ btnPrecioFinal.addEventListener("click", () => {
       precioFinal = sumatoriaProductos * IVA;
   }
 
-  parrafoPrecioFinal.innerHTML = `el precio final de ${
-    productosValidos.length
-  } productos es: $ ${precioFinal.toFixed(2)}`;
+ swal.fire(`el precio final de ${productosValidos.length} productos es: $ ${precioFinal.toFixed(2)}`) 
 });
 
 btnAgregar.addEventListener("click", () => {
@@ -74,7 +72,7 @@ btnAgregar.addEventListener("click", () => {
 const inputs = document.querySelectorAll("input");
 
 inputs.forEach((input) => {
-  const { addEventListener, className } = input;
+  let { addEventListener, className } = input;
   addEventListener("focus", () => (className = "foco-en-input"));
   addEventListener("blur", () => (className = ""));
 });
