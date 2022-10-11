@@ -10,3 +10,9 @@
   height: 250px;
 }
 
+.imagen {
+  height: 100px;
+  width: 100px;
+  object-fit: contain;
+}
+

@@ -1,5 +1,32 @@
-
 const tabla = document.querySelector("#tablaProductos");
+
+fetch("https://fakestoreapi.com/products")
+  .then((res) => res.json())
+  .then((json) => mostrarProductos(json));
+
+function agregarAlCarrito(item) {
+  const nombre = item.name;
+  const precio = item.price;
+  const producto = new Producto(nombre, precio);
+  const productos = JSON.parse(localStorage.getItem("productos")) || [];
+  const productosActualizados = [...productos, producto];
+  localStorage.setItem("productos", JSON.stringify(productosActualizados));
+}
+
+function mostrarProductos(listaProductos) {
+  listaProductos.forEach((item) => {
+    const fila = `<tr>
+                  <td>${item.title}</td>
+                  <td>${item.price}</td>
+                  <td> <img class="imagen" src="${item.image}"/></td>
+                  <td><button type="button">AGREGAR</button></td>
+                  </tr>`;
+    tabla.innerHTML += fila;
+  });
+}
+
+//---------------------------------------------------------------------------------------------------
+
 const btnAgregar = document.querySelector("#btnAgregar");
 const nombreProducto = document.querySelector("#inputNombre");
 const importeProducto = document.querySelector("#inputImporte");
@@ -51,22 +78,11 @@ btnPrecioFinal.addEventListener("click", () => {
       precioFinal = sumatoriaProductos * IVA;
   }
 
- swal.fire(`el precio final de ${productosValidos.length} productos es: $ ${precioFinal.toFixed(2)}`) 
-});
-
-btnAgregar.addEventListener("click", () => {
-  const nombre = nombreProducto.value;
-  const precio = parseInt(importeProducto.value);
-  const producto = new Producto(nombre, precio);
-  const productos = JSON.parse(localStorage.getItem("productos")) || [];
-  const productosActualizados = [...productos, producto];
-  localStorage.setItem("productos", JSON.stringify(productosActualizados));
-
-  const fila = `<tr>
-              <td>${producto.nombre}</td>
-              <td>${producto.precio}</td>
-          </tr>`;
-  tabla.innerHTML += fila;
+  swal.fire(
+    `el precio final de ${
+      productosValidos.length
+    } productos es: $ ${precioFinal.toFixed(2)}`
+  );
 });
 
 const inputs = document.querySelectorAll("input");
