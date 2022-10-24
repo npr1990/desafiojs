@@ -14,31 +14,30 @@
     </header>
 
     <main>
-      <form action="" autocomplete="off" method="POST">
-        <input
-          type="text"
-          id="inputNombre"
-          placeholder="Descripción del producto"
-          tabindex="1"
-        />
-        <input type="number" id="inputImporte" min="0" tabindex="2" placeholder="Valor del producto" />
-      </form>
-
-      <button type="submit" id="btnAgregar">AGREGAR</button>
-      
-      <table id="tablaProductos"></table>
-
-      <p>Selecciona un medio de pago</p>
+      <div>
+        <span class="subrayado">Carrito:</span>
+        <p id="cantidadCarrito"></p>
+        <span class="negrita">Precio Neto:</span>
+        <p id="precioCarrito"></p>
+      </div>
+      <div>
+        <p>Selecciona un medio de pago</p>
       <label for="efectivo">Efectivo</label>
       <input type="radio" name="modoPago" value="efectivo" />
       <label for="debito">Debito</label>
       <input type="radio" name="modoPago" value="debito"/>
       <label for="credito">Credito</label>
       <input type="radio" name="modoPago" value="credito" checked="checked"/>
+      </div>
+      <button type="submit" id="btnPagar">PAGAR</button>
+      
+      <table id="tablaProductos"></table>
+
+      
     </main>
 
     <footer>
-      <button type="submit" id="sumaPrecioFinal">VER PRECIO FINAL</button>
+      
      
     </footer>
     <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11.4.37/dist/sweetalert2.all.min.js'></script>

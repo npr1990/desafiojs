@@ -16,3 +16,18 @@
   object-fit: contain;
 }
 
+.subrayado {
+  text-decoration: underline;
+}
+
+.negrita {
+  font-weight: bolder;
+}
+
+.ocultar {
+  display: none;
+}
+
+.mostrar {
+  display: block; 
+}

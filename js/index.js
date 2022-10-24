@@ -1,39 +1,94 @@
-const tabla = document.querySelector("#tablaProductos");
+const tabla = document.getElementById("tablaProductos");
 
 fetch("https://fakestoreapi.com/products")
   .then((res) => res.json())
   .then((json) => mostrarProductos(json));
 
-function agregarAlCarrito(item) {
-  const nombre = item.name;
-  const precio = item.price;
-  const producto = new Producto(nombre, precio);
-  const productos = JSON.parse(localStorage.getItem("productos")) || [];
-  const productosActualizados = [...productos, producto];
-  localStorage.setItem("productos", JSON.stringify(productosActualizados));
+function actualizarCarrito(carrito, id) {
+  const cantidad = document.getElementById("cantidadCarrito");
+  const precio = document.getElementById("precioCarrito");
+  const total = Object.values(carrito).reduce(
+    (suma, p) => suma + p.cantidad * p.producto.price,
+    0
+  );
+  const totalProductos = Object.values(carrito).reduce(
+    (suma, p) => suma + p.cantidad,
+    0
+  );
+  cantidad.innerHTML = `${totalProductos} producto/s`;
+  precio.innerHTML = `$${total.toFixed(2)}`;
+
+  const cantidadParticular = document.getElementById(`${id}-ctd`);
+  if (!carrito[id]) {
+    cantidadParticular.innerHTML = "";
+  } else {
+    const cantProducto = carrito[id].cantidad;
+    cantidadParticular.innerHTML = cantProducto;
+  }
 }
 
 function mostrarProductos(listaProductos) {
+  localStorage.removeItem("carrito");
   listaProductos.forEach((item) => {
     const fila = `<tr>
                   <td>${item.title}</td>
                   <td>${item.price}</td>
                   <td> <img class="imagen" src="${item.image}"/></td>
-                  <td><button type="button">AGREGAR</button></td>
+                  <td><button id="${item.id}-add" class="btnAdd" type="button">AGREGAR</button></td>
+                  <td id="${item.id}-ctd"></td>
+                  <td><button id="${item.id}-dlt" class="ocultar btnDlt" type="button">ELIMINAR</button></td>
                   </tr>`;
     tabla.innerHTML += fila;
   });
+  const addButtons = document.querySelectorAll(".btnAdd");
+  const dltButtons = document.querySelectorAll(".btnDlt");
+
+  dltButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const id = btn.id.split("-")[0];
+      const cart = JSON.parse(localStorage.getItem("carrito")) || {};
+      let producto = cart[id];
+      if (producto.cantidad > 1) {
+        producto.cantidad -= 1;
+      } else {
+        btn.classList.remove("mostrar");
+        btn.classList.add("ocultar");
+        delete cart[id];
+      }
+
+      localStorage.setItem("carrito", JSON.stringify(cart));
+
+      actualizarCarrito(cart, id);
+    });
+  });
+
+  addButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const id = btn.id.split("-")[0];
+      const cart = JSON.parse(localStorage.getItem("carrito")) || {};
+      let producto = cart[id];
+
+      if (producto) {
+        producto.cantidad += 1;
+      } else {
+        producto = {
+          cantidad: 1,
+          producto: listaProductos.find((p) => p.id == id),
+        };
+        cart[id] = producto;
+      }
+      const btnDlt = document.getElementById(`${id}-dlt`);
+      btnDlt.classList.remove("ocultar");
+      btnDlt.classList.add("mostrar");
+
+      localStorage.setItem("carrito", JSON.stringify(cart));
+
+      actualizarCarrito(cart, id);
+    });
+  });
 }
 
-//---------------------------------------------------------------------------------------------------
-
-const btnAgregar = document.querySelector("#btnAgregar");
-const nombreProducto = document.querySelector("#inputNombre");
-const importeProducto = document.querySelector("#inputImporte");
-const btnPrecioFinal = document.querySelector("#sumaPrecioFinal");
-const modoPagoSeleccionado = document.querySelector(
-  'input[name="modoPago"]:checked'
-).value;
+const btnPagar = document.getElementById("btnPagar");
 
 // Agregado de precios.
 const IVA = 1.21;
@@ -42,53 +97,32 @@ const descuentoEfectivo = 0.8;
 
 const descuentoDebito = 0.9;
 
-class Producto {
-  constructor(nombre, precio) {
-    this.nombre = nombre;
-    this.precio = precio;
-  }
-}
+btnPagar.addEventListener("click", () => {
+  const cart = JSON.parse(localStorage.getItem("carrito")) || {};
+  const modoPagoSeleccionado = document.querySelector(
+    'input[name="modoPago"]:checked'
+  ).value;
+  const total = Object.values(cart).reduce(
+    (suma, p) => suma + p.cantidad * p.producto.price,
+    0
+  );
 
-btnPrecioFinal.addEventListener("click", () => {
-  const productosGuardados = JSON.parse(localStorage.getItem("productos"));
-  const productos = productosGuardados ? productosGuardados : [];
-
-  //filtrado de productos con atributo precio mayor a 0
-  let productosValidos = productos.filter((a) => a.precio > 0);
-  //funcion que suma (va dentro de reduce)
-  function sumar(a, b) {
-    return a + b.precio;
-  }
-  //sumatoria de productos desde "0"
-  let sumatoriaProductos = productosValidos.reduce(sumar, 0);
-  //let valorProducto = productos.reduce((a,b)=>{a+b}, 0)
   let precioFinal;
 
   switch (modoPagoSeleccionado) {
     case "efectivo":
-      precioFinal = sumatoriaProductos * IVA * descuentoEfectivo;
+      precioFinal = total * IVA * descuentoEfectivo;
+      break;
 
     case "debito":
-      precioFinal = sumatoriaProductos * IVA * descuentoDebito;
-
+      precioFinal = total * IVA * descuentoDebito;
+      break;
     case "credito":
-      precioFinal = sumatoriaProductos * IVA;
-
+      precioFinal = total * IVA;
+      break;
     default:
-      precioFinal = sumatoriaProductos * IVA;
+      precioFinal = total * IVA;
   }
 
-  swal.fire(
-    `el precio final de ${
-      productosValidos.length
-    } productos es: $ ${precioFinal.toFixed(2)}`
-  );
-});
-
-const inputs = document.querySelectorAll("input");
-
-inputs.forEach((input) => {
-  let { addEventListener, className } = input;
-  addEventListener("focus", () => (className = "foco-en-input"));
-  addEventListener("blur", () => (className = ""));
+  swal.fire(`el precio final es: $ ${precioFinal.toFixed(2)}`);
 });
